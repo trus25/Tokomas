@@ -1,1823 +1,516 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-function datediff($in, $out){
-    // Hari libur lainnya ditambahkan secara manual
-    $holidays = array('2012-09-07');
-
-    // Jika Diff L_IN > Time Server > r_durasi
-    $datePlus = new DateTime($in); 
-    $time = new DateTime();
-    $intervalCurrent = $datePlus->diff($time)->d;
-    $periodCurrent = new DatePeriod($datePlus, new DateInterval('P1D'), $time);
-
-      foreach($periodCurrent as $dt) {
-          $curr = $dt->format('D');
-
-          // substract if Saturday or Sunday
-          if ($curr == 'Sat' || $curr == 'Sun') {
-              $intervalCurrent--;
-          }
-
-          // (optional) for the updated question
-          elseif (in_array($dt->format('Y-m-d'), $holidays)) {
-              $intervalCurrent--;
-          }
-      }
-
-    // Jika Diff L_IN dan L_OUT > r_durasi
-    $dateIn = new DateTime($in);
-    $dateOut = new DateTime($out);
-    $interval = $dateIn->diff($dateOut)->d;
-    $period = new DatePeriod($dateIn, new DateInterval('P1D'), $dateOut);
-
-      foreach($period as $dt) {
-          $curr = $dt->format('D');
-
-          // substract if Saturday or Sunday
-          if ($curr == 'Sat' || $curr == 'Sun') {
-              $interval--;
-          }
-
-          // (optional) for the updated question
-          elseif (in_array($dt->format('Y-m-d'), $holidays)) {
-              $interval--;
-          }
-      }
-
-    $date['interval'] = $interval;
-    $date['intervalcurrent'] = $intervalCurrent;
-    return $date;
-}
 ?>
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Dashboard
-        <small>Control panel</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="<?php echo base_url();?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-      </ol>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-    <?php if ($this->session->flashdata('nouser')) { ?>
-    <div class="form-group">
-      <div class="alert alert-danger alert-primary alert-block">
-      <?php echo $this->session->flashdata('nouser') ?>
-      </div>
+<!-- Start Status area -->
+    <div class="notika-status-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2><span class="counter">50,000</span></h2>
+                            <p>Total Website Traffics</p>
+                        </div>
+                        <div class="sparkline-bar-stats1">9,4,8,6,5,6,4,8,3,5,9,5</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2><span class="counter">90,000</span>k</h2>
+                            <p>Website Impressions</p>
+                        </div>
+                        <div class="sparkline-bar-stats2">1,4,8,3,5,6,4,8,3,3,9,5</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30 dk-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2>$<span class="counter">40,000</span></h2>
+                            <p>Total Online Sales</p>
+                        </div>
+                        <div class="sparkline-bar-stats3">4,2,8,2,5,6,3,8,3,5,9,5</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30 dk-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2><span class="counter">1,000</span></h2>
+                            <p>Total Support Tickets</p>
+                        </div>
+                        <div class="sparkline-bar-stats4">2,4,8,4,5,7,4,7,3,5,7,5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <?php } ?>
-
-      <!-- Small boxes (Stat box) -->
-<!--       <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>150</h3>
-
-              <p>New Orders</p>
+    <!-- End Status area-->
+    <!-- Start Sale Statistic area-->
+    <div class="sale-statistic-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-8 col-sm-7 col-xs-12">
+                    <div class="sale-statistic-inner notika-shadow mg-tb-30">
+                        <div class="curved-inner-pro">
+                            <div class="curved-ctn">
+                                <h2>Sales Statistics</h2>
+                                <p>Vestibulum purus quam scelerisque, mollis nonummy metus</p>
+                            </div>
+                        </div>
+                        <div id="curved-line-chart" class="flot-chart-sts flot-chart"></div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
+                    <div class="statistic-right-area notika-shadow mg-tb-30 sm-res-mg-t-0">
+                        <div class="past-day-statis">
+                            <h2>For The Past 30 Days</h2>
+                            <p>Fusce eget dolor id justo luctus the commodo vel pharetra nisi. Donec velit of libero.</p>
+                        </div>
+            <div class="dash-widget-visits"></div>
+                        <div class="past-statistic-an">
+                            <div class="past-statistic-ctn">
+                                <h3><span class="counter">3,20,000</span></h3>
+                                <p>Page Views</p>
+                            </div>
+                            <div class="past-statistic-graph">
+                                <div class="stats-bar"></div>
+                            </div>
+                        </div>
+                        <div class="past-statistic-an">
+                            <div class="past-statistic-ctn">
+                                <h3><span class="counter">1,03,000</span></h3>
+                                <p>Total Clicks</p>
+                            </div>
+                            <div class="past-statistic-graph">
+                                <div class="stats-line"></div>
+                            </div>
+                        </div>
+                        <div class="past-statistic-an">
+                            <div class="past-statistic-ctn">
+                                <h3><span class="counter">24,00,000</span></h3>
+                                <p>Site Visitors</p>
+                            </div>
+                            <div class="past-statistic-graph">
+                                <div class="stats-bar-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
         </div>
-        <div class="col-lg-3 col-xs-6">
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-              <p>Bounce Rate</p>
+    </div>
+    <!-- End Sale Statistic area-->
+    <!-- Start Email Statistic area-->
+    <div class="notika-email-post-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="email-statis-inner notika-shadow">
+                        <div class="email-ctn-round">
+                            <div class="email-rdn-hd">
+                <h2>Email Statistics</h2>
+              </div>
+                            <div class="email-statis-wrap">
+                                <div class="email-round-nock">
+                                    <input type="text" class="knob" value="0" data-rel="55" data-linecap="round" data-width="130" data-bgcolor="#E4E4E4" data-fgcolor="#00c292" data-thickness=".10" data-readonly="true">
+                                </div>
+                                <div class="email-ctn-nock">
+                                    <p>Total Emails Sent</p>
+                                </div>
+                            </div>
+                            <div class="email-round-gp">
+                                <div class="email-round-pro">
+                                    <div class="email-signle-gp">
+                                        <input type="text" class="knob" value="0" data-rel="75" data-linecap="round" data-width="90" data-bgcolor="#E4E4E4" data-fgcolor="#00c292" data-thickness=".10" data-readonly="true" disabled>
+                                    </div>
+                                    <div class="email-ctn-nock">
+                                        <p>Bounce Rate</p>
+                                    </div>
+                                </div>
+                                <div class="email-round-pro">
+                                    <div class="email-signle-gp">
+                                        <input type="text" class="knob" value="0" data-rel="35" data-linecap="round" data-width="90" data-bgcolor="#E4E4E4" data-fgcolor="#00c292" data-thickness=".10" data-readonly="true" disabled>
+                                    </div>
+                                    <div class="email-ctn-nock">
+                                        <p>Total Opened</p>
+                                    </div>
+                                </div>
+                                <div class="email-round-pro sm-res-ds-n lg-res-mg-bl">
+                                    <div class="email-signle-gp">
+                                        <input type="text" class="knob" value="0" data-rel="45" data-linecap="round" data-width="90" data-bgcolor="#E4E4E4" data-fgcolor="#00c292" data-thickness=".10" data-readonly="true" disabled>
+                                    </div>
+                                    <div class="email-ctn-nock">
+                                        <p>Total Ignored</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="recent-post-wrapper notika-shadow sm-res-mg-t-30 tb-res-ds-n dk-res-ds">
+                        <div class="recent-post-ctn">
+                            <div class="recent-post-title">
+                                <h2>Recent Posts</h2>
+                            </div>
+                        </div>
+                        <div class="recent-post-items">
+                            <div class="recent-post-signle rct-pt-mg-wp">
+                                <a href="#">
+                                    <div class="recent-post-flex">
+                                        <div class="recent-post-img">
+                                            <img src="img/post/2.jpg" alt="" />
+                                        </div>
+                                        <div class="recent-post-it-ctn">
+                                            <h2>Smith</h2>
+                                            <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="recent-post-signle">
+                                <a href="#">
+                                    <div class="recent-post-flex rct-pt-mg">
+                                        <div class="recent-post-img">
+                                            <img src="img/post/1.jpg" alt="" />
+                                        </div>
+                                        <div class="recent-post-it-ctn">
+                                            <h2>John Deo</h2>
+                                            <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="recent-post-signle">
+                                <a href="#">
+                                    <div class="recent-post-flex rct-pt-mg">
+                                        <div class="recent-post-img">
+                                            <img src="img/post/4.jpg" alt="" />
+                                        </div>
+                                        <div class="recent-post-it-ctn">
+                                            <h2>Malika</h2>
+                                            <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="recent-post-signle">
+                                <a href="#">
+                                    <div class="recent-post-flex rct-pt-mg">
+                                        <div class="recent-post-img">
+                                            <img src="img/post/2.jpg" alt="" />
+                                        </div>
+                                        <div class="recent-post-it-ctn">
+                                            <h2>Smith</h2>
+                                            <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="recent-post-signle">
+                                <a href="#">
+                                    <div class="recent-post-flex rct-pt-mg">
+                                        <div class="recent-post-img">
+                                            <img src="img/post/1.jpg" alt="" />
+                                        </div>
+                                        <div class="recent-post-it-ctn">
+                                            <h2>John Deo</h2>
+                                            <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="recent-post-signle">
+                                <a href="#">
+                                    <div class="recent-post-flex rc-ps-vw">
+                                        <div class="recent-post-line rct-pt-mg">
+                                            <p>View All</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="recent-items-wp notika-shadow sm-res-mg-t-30">
+                        <div class="rc-it-ltd">
+                            <div class="recent-items-ctn">
+                                <div class="recent-items-title">
+                                    <h2>Recent Items</h2>
+                                </div>
+                            </div>
+                            <div class="recent-items-inn">
+                                <table class="table table-inner table-vmiddle">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th style="width: 60px">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="f-500 c-cyan">4555</td>
+                                            <td>Samsung Galaxy Mega</td>
+                                            <td class="f-500 c-cyan">$921</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="f-500 c-cyan">4556</td>
+                                            <td>Huawei Ascend P6</td>
+                                            <td class="f-500 c-cyan">$240</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="f-500 c-cyan">8778</td>
+                                            <td>HTC One M8</td>
+                                            <td class="f-500 c-cyan">$400</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="f-500 c-cyan">5667</td>
+                                            <td>Samsung Galaxy Alpha</td>
+                                            <td class="f-500 c-cyan">$870</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="f-500 c-cyan">7886</td>
+                                            <td>LG G3</td>
+                                            <td class="f-500 c-cyan">$790</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+              <div id="recent-items-chart" class="flot-chart-items flot-chart vt-ct-it tb-rc-it-res"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
         </div>
-        ./col
-        <div class="col-lg-3 col-xs-6">
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>44</h3>
-
-              <p>User Registrations</p>
+    </div>
+    <!-- End Email Statistic area-->
+    <!-- Start Realtime sts area-->
+    <div class="realtime-statistic-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="realtime-wrap notika-shadow mg-t-30">
+                        <div class="realtime-ctn">
+                            <div class="realtime-title">
+                                <h2>Realtime Visitors</h2>
+                            </div>
+                        </div>
+                        <div class="realtime-visitor-ctn">
+                            <div class="realtime-vst-sg">
+                                <h4><span class="counter">4,35,456</span></h4>
+                                <p>Visitors last 24h</p>
+                            </div>
+                            <div class="realtime-vst-sg">
+                                <h4><span class="counter">4,566</span></h4>
+                                <p>Visitors last 30m</p>
+                            </div>
+                        </div>
+                        <div class="realtime-map">
+                            <div class="vectorjsmarp" id="world-map"></div>
+                        </div>
+                        <div class="realtime-country-ctn realtime-ltd-mg">
+                            <h5>September 4, 21:44:02 (2 Mins 56 Seconds)</h5>
+                            <div class="realtime-ctn-bw">
+                                <div class="realtime-ctn-st">
+                                    <span><img src="img/country/1.png" alt="" /></span> <span>United States</span>
+                                </div>
+                                <div class="realtime-bw">
+                                    <span>Firefox</span>
+                                </div>
+                                <div class="realtime-bw">
+                                    <span>Mac OSX</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="realtime-country-ctn">
+                            <h5>September 7, 20:44:02 (5 Mins 56 Seconds)</h5>
+                            <div class="realtime-ctn-bw">
+                                <div class="realtime-ctn-st">
+                                    <span><img src="img/country/2.png" alt="" /></span> <span>Australia</span>
+                                </div>
+                                <div class="realtime-bw">
+                                    <span>Firefox</span>
+                                </div>
+                                <div class="realtime-bw">
+                                    <span>Mac OSX</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="realtime-country-ctn">
+                            <h5>September 9, 19:44:02 (10 Mins 56 Seconds)</h5>
+                            <div class="realtime-ctn-bw">
+                                <div class="realtime-ctn-st">
+                                    <span><img src="img/country/3.png" alt="" /></span> <span>Brazil</span>
+                                </div>
+                                <div class="realtime-bw">
+                                    <span>Firefox</span>
+                                </div>
+                                <div class="realtime-bw">
+                                    <span>Mac OSX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="add-todo-list notika-shadow mg-t-30">
+                        <div class="realtime-ctn">
+                            <div class="realtime-title">
+                                <h2>Add Todo</h2>
+                            </div>
+                        </div>
+                        <div class="card-box">
+                            <div class="todoapp">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-sm-6 col-xs-12">
+                                        <h4 id="todo-message"><span id="todo-remaining"></span> of <span id="todo-total"></span> remaining</h4>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="notika-todo-btn">
+                                            <a href="#" class="pull-right btn btn-primary btn-sm" id="btn-archive">Archive</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="notika-todo-scrollbar">
+                                    <ul class="list-group no-margn todo-list" id="todo-list"></ul>
+                                </div>
+                                <div id="todo-form">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 col-sm-12 col-xs-12 todo-inputbar">
+                                            <div class="form-group todo-flex">
+                                                <div class="nk-int-st">
+                                                    <input type="text" id="todo-input-text" name="todo-input-text" class="form-control" placeholder="Add new todo">
+                                                </div>
+                                                <div class="todo-send">
+                                                    <button class="btn-primary btn-md btn-block btn notika-add-todo" type="button" id="todo-btn-submit">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="notika-chat-list notika-shadow mg-t-30 tb-res-ds-n dk-res-ds">
+                        <div class="realtime-ctn">
+                            <div class="realtime-title">
+                                <h2>Chat Box</h2>
+                            </div>
+                        </div>
+                        <div class="card-box">
+                            <div class="chat-conversation">
+                                <div class="widgets-chat-scrollbar">
+                                    <ul class="conversation-list">
+                                        <li class="clearfix">
+                                            <div class="chat-avatar">
+                                                <img src="img/post/1.jpg" alt="male">
+                                                <i>10:00</i>
+                                            </div>
+                                            <div class="conversation-text">
+                                                <div class="ctext-wrap">
+                                                    <i>John Deo</i>
+                                                    <p>
+                                                        Hello!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix odd">
+                                            <div class="chat-avatar">
+                                                <img src="img/post/2.jpg" alt="Female">
+                                                <i>10:01</i>
+                                            </div>
+                                            <div class="conversation-text">
+                                                <div class="ctext-wrap chat-widgets-cn">
+                                                    <i>Smith</i>
+                                                    <p>
+                                                        Hi, How are you? What about our next meeting?
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="chat-avatar">
+                                                <img src="img/post/1.jpg" alt="male">
+                                                <i>10:01</i>
+                                            </div>
+                                            <div class="conversation-text">
+                                                <div class="ctext-wrap">
+                                                    <i>John Deo</i>
+                                                    <p>
+                                                        Yeah everything is fine
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix odd">
+                                            <div class="chat-avatar">
+                                                <img src="img/post/2.jpg" alt="male">
+                                                <i>10:02</i>
+                                            </div>
+                                            <div class="conversation-text">
+                                                <div class="ctext-wrap chat-widgets-cn">
+                                                    <i>Smith</i>
+                                                    <p>
+                                                        Wow that's great
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="chat-avatar">
+                                                <img src="img/post/1.jpg" alt="male">
+                                                <i>10:01</i>
+                                            </div>
+                                            <div class="conversation-text">
+                                                <div class="ctext-wrap">
+                                                    <i>John Deo</i>
+                                                    <p>
+                                                        Doing Better i am thinking about that..
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix odd">
+                                            <div class="chat-avatar">
+                                                <img src="img/post/2.jpg" alt="male">
+                                                <i>10:02</i>
+                                            </div>
+                                            <div class="conversation-text">
+                                                <div class="ctext-wrap chat-widgets-cn">
+                                                    <i>Smith</i>
+                                                    <p>
+                                                        Wow, You also tallent man...
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="chat-widget-input">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 col-sm-12 col-xs-12 chat-inputbar">
+                                            <div class="form-group todo-flex">
+                                                <div class="nk-int-st">
+                                                    <input type="text" class="form-control chat-input" placeholder="Enter your text">
+                                                </div>
+                                                <div class="chat-send">
+                                                    <button type="submit" class="btn btn-md btn-primary btn-block notika-chat-btn">Send</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
         </div>
-        <div class="col-lg-3 col-xs-6">
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>65</h3>
-
-              <p>Unique Visitors</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-      </div> -->
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <?php
-            if($jenis=='Proyek' || $jenis=='Pabrik'){
-            echo '<div class="box">';
-              echo '<div class="box-header">';
-              if($jenis=='Proyek'){
-                echo '<h3 class="box-title">Monitoring Buktikas Proyek</h3>';
-              }else{
-                echo '<h3 class="box-title">Monitoring Buktikas Pabrik</h3>';
-              }
-            echo '</div>';
-            ?>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive">
-                  <table id="tableproyek" class="table display table-bordered table-striped table-hover" width="100%">
-                    <thead>
-                      <tr>
-                        <th style="text-align: center;">No.</th>
-                        <th style="text-align: center;">No. Bukti Kas</th>
-                        <th style="text-align: center;">Dibayar Kepada</th>
-                        <th style="text-align: center;">Total Nilai Rupiah</th>
-                      <?php
-                      if($jenis=='Pabrik'){
-                          echo '<th colspan="2" style="text-align: center;">PPPP</th>';
-                          echo '<th colspan="2" style="text-align: center;">KP</th>';
-                          echo '<th colspan="2"  style="text-align: center;">MPAB</th>';
-                          echo '<th colspan="2"  style="text-align: center;">MPPIC</th>';
-                          echo '<th colspan="2" style="text-align: center;">MDIV</th>';
-                        }
-
-                      if($jenis=='Proyek'){
-                          echo '<th colspan="2" style="text-align: center;">PPPP</th>';
-                          echo '<th colspan="2" style="text-align: center;">KP</th>';
-                          echo '<th colspan="2"  style="text-align: center;">MPROY</th>';
-                          echo '<th colspan="2"  style="text-align: center;">MPPIC</th>';
-                          echo '<th colspan="2" style="text-align: center;">MDIV</th>';
-                        }
-
-                      if($jenis=='Pabrik' || $jenis=='Proyek'){
-                        echo '<th colspan="2" style="text-align: center;">DOKKON</th>';
-                          echo '<th colspan="2" style="text-align: center;">MDAN</th>';
-                          echo '<th colspan="2" style="text-align: center;">PAJAK</th>';
-                          echo '<th colspan="2"  style="text-align: center;">SAKT</th>';
-                          echo '<th colspan="2"  style="text-align: center;">KAKT</th>';
-                          echo '<th colspan="2"  style="text-align: center;">KKEU</th>';
-                          echo '<th colspan="2" style="text-align: center;">MKU</th>';
-                          echo '<th colspan="2" style="text-align: center;">DIREKSI</th>';
-                          echo '<th colspan="2" style="text-align: center;">KASIR</th>';
-                      }
-                     if($jenis=='Pabrik'){
-                      echo '</tr>
-                          <tr>
-                          <th></th>
-                          <th><input type="text" id="searchPaNo1" style="width: 100%;" placeholder="Telusuri"></th>
-                          <th><input type="text" id="searchPaDk1" style="width: 100%;" placeholder="Telusuri"></th>
-                          <th><input type="text" id="searchPaTot1" style="width: 100%;" placeholder="Telusuri"></th>';
-                        }
-
-                      if($jenis=='Proyek'){
-                      echo '</tr>
-                          <tr>
-                          <th></th>
-                          <th><input type="text" id="searchPrNo1" style="width: 100%;" placeholder="Telusuri"></th>
-                          <th><input type="text" id="searchPrDk1" style="width: 100%;" placeholder="Telusuri"></th>                     
-                          <th><input type="text" id="searchPrTot1" style="width: 100%;" placeholder="Telusuri"></th>';
-                        }
-
-                  ?>                
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">IN</th>
-                  <th style="text-align: center;">OUT</th>
-                  <th style="text-align: center;">DIBAYARKAN</th>                  
-                </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    foreach($log as $lg){
-                      if($jenis=='Proyek'){
-                        echo '<tr>
-                            <th style="text-align: center;"></th>
-                            <th style="text-align: center;"><a href="'.base_url('dokumen/detail/'.$lg->iddok).'">'.$lg->nodok.'</a></th>
-                            <th>'.$lg->kepada.'</th>
-                            <th style="text-align:right;">Rp. '.number_format($lg->total , 0, ',', '.').'</th>';
-                      $date = datediff($lg->INP4,$lg->OUTP4);
-                      if($lg->P4S=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INP4.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTP4.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[1]->r_durasi){
-                        if($date['interval'] > $durasi[1]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INP4.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTP4.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INP4.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTP4.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INP4.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTP4.'</span></th>';
-                      }
-                    
-                      $date = datediff($lg->INKP,$lg->OUTKP);
-                      if($lg->KPS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INKP.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTKP.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[2]->r_durasi){
-                        if($date['interval'] > $durasi[2]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INKP.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTKP.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INKP.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKP.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INKP.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKP.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMPROY,$lg->OUTMPROY);
-                      if($lg->MPROYS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMPROY.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMPROY.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[3]->r_durasi){
-                        if($date['interval'] > $durasi[3]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMPROY.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMPROY.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMPROY.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMPROY.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMPROY.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMPROY.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMPIC,$lg->OUTMPIC);
-                      if($lg->MPICS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMPIC.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMPIC.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[4]->r_durasi){
-                        if($date['interval'] > $durasi[4]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMPIC.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMPIC.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMPIC.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMPIC.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMPIC.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMPIC.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMDIV,$lg->OUTMDIV);
-                      if($lg->MDIVS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMDIV.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMDIV.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[5]->r_durasi){
-                        if($date['interval'] > $durasi[5]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMDIV.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMDIV.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMDIV.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMDIV.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMDIV.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMDIV.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INDOKKON,$lg->OUTDOKKON);
-                      if($lg->DOKKONS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTDOKKON.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[5]->r_durasi){
-                        if($date['interval'] > $durasi[5]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INDOKKON.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTDOKKON.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTDOKKON.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTDOKKON.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMDAN,$lg->OUTMDAN);
-                      if($lg->MDANS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMDAN.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMDAN.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[12]->r_durasi){
-                        if($date['interval'] > $durasi[12]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMDAN.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMDAN.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMDAN.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMDAN.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INPJK,$lg->OUTPJK);
-                      if($lg->PJKS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INPJK.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTPJK.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[13]->r_durasi){
-                        if($date['interval'] > $durasi[13]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INPJK.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTPJK.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTPJK.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTPJK.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INSAKT,$lg->OUTSAKT);
-                      if($lg->SAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INSAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTSAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[14]->r_durasi){
-                        if($date['interval'] > $durasi[14]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INSAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTSAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTSAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTSAKT.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INKAKT,$lg->OUTKAKT);
-                      if($lg->KAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INKAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTKAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[15]->r_durasi){
-                        if($date['interval'] > $durasi[15]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INKAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTKAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKAKT.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INKKEU,$lg->OUTKKEU);
-                      if($lg->KKEUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INKKEU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTKKEU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[16]->r_durasi){
-                        if($date['interval'] > $durasi[16]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INKKEU.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTKKEU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKKEU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKKEU.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMKU,$lg->OUTMKU);
-                      if($lg->MKUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMKU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMKU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[17]->r_durasi){
-                        if($date['interval'] > $durasi[17]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMKU.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMKU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMKU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMKU.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INDIR,$lg->OUTDIR);
-                      if($lg->DIRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INDIR.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[18]->r_durasi){
-                        if($date['interval'] > $durasi[18]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INDIR.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTDIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTDIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTDIR.'</span></th>';
-                      }
-                      $date = datediff($lg->INKASIR,$lg->OUTKASIR);
-                      if($lg->KASRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[19]->r_durasi){
-                        if($date['interval'] > $durasi[19]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->OUTKASIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->OUTKASIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->OUTKASIR.'</span></th>';
-                      } 
-                        echo '</tr>';
-                    }else if($jenis=='Pabrik'){
-                        echo '<tr>
-                            <th style="text-align: center;"></th>
-                            <th style="text-align: center;"><a href="'.base_url('dokumen/detail/'.$lg->iddok).'">'.$lg->nodok.'</a></span></th>
-                            <th>'.$lg->kepada.'</th>
-                            <th style="text-align:right;">Rp. '.number_format($lg->total , 0, ',', '.').'</th>';
-                      $date = datediff($lg->INP4,$lg->OUTP4);
-                      if($lg->P4S=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INP4.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTP4.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[1]->r_durasi){
-                        if($date['interval'] > $durasi[1]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INP4.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTP4.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INP4.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTP4.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INP4.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTP4.'</span></th>';
-                      }
-                    
-                      $date = datediff($lg->INKP,$lg->OUTKP);
-                      if($lg->KPS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INKP.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTKP.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[2]->r_durasi){
-                        if($date['interval'] > $durasi[2]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INKP.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTKP.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INKP.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKP.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INKP.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKP.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMPAB,$lg->OUTMPAB);
-                      if($lg->MPABS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMPAB.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMPAB.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[3]->r_durasi){
-                        if($date['interval'] > $durasi[3]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMPAB.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMPAB.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMPAB.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMPAB.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMPAB.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMPAB.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMPIC,$lg->OUTMPIC);
-                      if($lg->MPICS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMPIC.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMPIC.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[4]->r_durasi){
-                        if($date['interval'] > $durasi[4]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMPIC.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMPIC.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMPIC.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMPIC.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMPIC.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMPIC.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMDIV,$lg->OUTMDIV);
-                      if($lg->MDIVS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMDIV.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMDIV.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[5]->r_durasi){
-                        if($date['interval'] > $durasi[5]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMDIV.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMDIV.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMDIV.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMDIV.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMDIV.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMDIV.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INDOKKON,$lg->OUTDOKKON);
-                      if($lg->DOKKONS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTDOKKON.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[5]->r_durasi){
-                        if($date['interval'] > $durasi[5]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INDOKKON.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTDOKKON.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTDOKKON.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTDOKKON.'</span></th>';
-                      }
-
-
-                      $date = datediff($lg->INMDAN,$lg->OUTMDAN);
-                      if($lg->MDANS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMDAN.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMDAN.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[12]->r_durasi){
-                        if($date['interval'] > $durasi[12]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMDAN.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMDAN.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMDAN.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMDAN.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INPJK,$lg->OUTPJK);
-                      if($lg->PJKS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INPJK.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTPJK.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[13]->r_durasi){
-                        if($date['interval'] > $durasi[13]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INPJK.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTPJK.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTPJK.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTPJK.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INSAKT,$lg->OUTSAKT);
-                      if($lg->SAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INSAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTSAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[14]->r_durasi){
-                        if($date['interval'] > $durasi[14]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INSAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTSAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTSAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTSAKT.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INKAKT,$lg->OUTKAKT);
-                      if($lg->KAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INKAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTKAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[15]->r_durasi){
-                        if($date['interval'] > $durasi[15]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INKAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTKAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKAKT.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INKKEU,$lg->OUTKKEU);
-                      if($lg->KKEUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INKKEU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTKKEU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[16]->r_durasi){
-                        if($date['interval'] > $durasi[16]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INKKEU.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTKKEU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKKEU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTKKEU.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INMKU,$lg->OUTMKU);
-                      if($lg->MKUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INMKU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTMKU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[17]->r_durasi){
-                        if($date['interval'] > $durasi[17]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INMKU.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTMKU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMKU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTMKU.'</span></th>';
-                      }
-
-                      $date = datediff($lg->INDIR,$lg->OUTDIR);
-                      if($lg->DIRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INDIR.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$lg->OUTDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[18]->r_durasi){
-                        if($date['interval'] > $durasi[18]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->INDIR.'</span></th>
-                              <th><span class = "badge bg-red">'.$lg->OUTDIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTDIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$lg->OUTDIR.'</span></th>';
-                      }
-                      $date = datediff($lg->INKASIR,$lg->OUTKASIR);
-                      if($lg->KASRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[19]->r_durasi){
-                        if($date['interval'] > $durasi[19]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$lg->OUTKASIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$lg->OUTKASIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$lg->OUTKASIR.'</span></th>';
-                      }
-                        echo '</tr>';
-                    }
-                  }
-                  ?>
-                </tbody>
-              </table>
-            </div>
-          <!-- /.box -->
-          </div>
-              <?php 
-              }
-
-              if($tipe=='admin' || $jenis=='Pusat'){
-              ?>
-            <div class="box">
-              <div class="box-header">
-                <h3 class="box-title">Monitoring Buktikas Proyek</h3>
-              </div>
-              <div class="box-body">
-                <table id="tableproyek" class="table display table-bordered table-striped table-hover" width="100%">
-                  <thead>
-                    <tr><th style="text-align: center;">No.</th>
-                      <th style="text-align: center;">No. Bukti Kas</th>
-                      <th style="text-align: center;">Dibayar Kepada</th>
-                      <th style="text-align: center;">Kode Wilayah</th>
-                      <th style="text-align: center;">Total Nilai Rupiah</th>
-                      <th colspan="2" style="text-align: center;">PPPP</th>
-                      <th colspan="2" style="text-align: center;">KP</th>
-                      <th colspan="2"  style="text-align: center;">MPAB</th>
-                      <th colspan="2"  style="text-align: center;">MPPIC</th>
-                      <th colspan="2" style="text-align: center;">MDIV</th>
-                      <th colspan="2" style="text-align: center;">DOKKON</th>
-                      <th colspan="2" style="text-align: center;">MDAN</th>
-                      <th colspan="2" style="text-align: center;">PAJAK</th>
-                      <th colspan="2"  style="text-align: center;">SAKT</th>
-                      <th colspan="2"  style="text-align: center;">KAKT</th>
-                      <th colspan="2"  style="text-align: center;">KKEU</th>
-                      <th colspan="2" style="text-align: center;">MKU</th>
-                      <th colspan="2" style="text-align: center;">DIREKSI</th>
-                      <th colspan="2" style="text-align: center;">KASIR</th>             
-                    </tr>
-                    <tr>
-                      <th></th>
-                      <th><input type="text" id="searchPrNo" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th><input type="text" id="searchPrDk" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th><input type="text" id="searchPrKw" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th><input type="text" id="searchPrTot" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">DIBAYARKAN</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach($logpr as $pr){
-                        echo '<tr>
-                            <th style="text-align: center;"></th>
-                            <th style="text-align: center;"><a href="'.base_url('dokumen/detail/'.$pr->iddok).'">'.$pr->nodok.'</a></th>
-                            <th>'.$pr->kepada.'</th>
-                            <th>'.$pr->kodewil.'</th>
-                            <th style="text-align:right;">Rp. '.number_format($pr->total , 0, ',', '.').'</th>';
-                      $date = datediff($pr->INP4,$pr->OUTP4);
-                      if($pr->P4S=='1'){
-                        if($date['interval'] > $durasi[1]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INP4.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTP4.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INP4.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTP4.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INP4.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTP4.'</span></th>';
-                      }
-                    
-                      $date = datediff($pr->INKP,$pr->OUTKP);
-                      if($pr->KPS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INKP.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTKP.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[2]->r_durasi){
-                        if($date['interval'] > $durasi[2]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INKP.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTKP.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INKP.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTKP.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INKP.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTKP.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INMPROY,$pr->OUTMPROY);
-                      if($pr->MPROYS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INMPROY.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTMPROY.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[3]->r_durasi){
-                        if($date['interval'] > $durasi[3]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INMPROY.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTMPROY.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INMPROY.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMPROY.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INMPROY.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMPROY.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INMPIC,$pr->OUTMPIC);
-                      if($pr->MPICS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INMPIC.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTMPIC.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[4]->r_durasi){
-                        if($date['interval'] > $durasi[4]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INMPIC.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTMPIC.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INMPIC.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMPIC.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INMPIC.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMPIC.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INMDIV,$pr->OUTMDIV);
-                      if($pr->MDIVS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INMDIV.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTMDIV.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[5]->r_durasi){
-                        if($date['interval'] > $durasi[5]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INMDIV.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTMDIV.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INMDIV.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMDIV.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INMDIV.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMDIV.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INDOKKON,$pr->OUTDOKKON);
-                      if($pr->DOKKONS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTDOKKON.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[11]->r_durasi){
-                        if($date['interval'] > $durasi[11]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INDOKKON.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTDOKKON.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTDOKKON.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTDOKKON.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INMDAN,$pr->OUTMDAN);
-                      if($pr->MDANS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INMDAN.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTMDAN.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[12]->r_durasi){
-                        if($date['interval'] > $durasi[12]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INMDAN.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTMDAN.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMDAN.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMDAN.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INPJK,$pr->OUTPJK);
-                      if($pr->PJKS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INPJK.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTPJK.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[13]->r_durasi){
-                        if($date['interval'] > $durasi[13]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INPJK.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTPJK.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTPJK.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTPJK.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INSAKT,$pr->OUTSAKT);
-                      if($pr->SAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INSAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTSAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[14]->r_durasi){
-                        if($date['interval'] > $durasi[14]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INSAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTSAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTSAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTSAKT.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INKAKT,$pr->OUTKAKT);
-                      if($pr->KAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INKAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTKAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[15]->r_durasi){
-                        if($date['interval'] > $durasi[15]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INKAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTKAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTKAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTKAKT.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INKKEU,$pr->OUTKKEU);
-                      if($pr->KKEUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INKKEU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTKKEU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[16]->r_durasi){
-                        if($date['interval'] > $durasi[16]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INKKEU.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTKKEU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTKKEU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTKKEU.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INMKU,$pr->OUTMKU);
-                      if($pr->MKUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INMKU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTMKU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[17]->r_durasi){
-                        if($date['interval'] > $durasi[17]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INMKU.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTMKU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMKU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTMKU.'</span></th>';
-                      }
-
-                      $date = datediff($pr->INDIR,$pr->OUTDIR);
-                      if($pr->DIRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pr->INDIR.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pr->OUTDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[18]->r_durasi){
-                        if($date['interval'] > $durasi[18]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->INDIR.'</span></th>
-                              <th><span class = "badge bg-red">'.$pr->OUTDIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTDIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$pr->OUTDIR.'</span></th>';
-                      }
-                      $date = datediff($pr->INKASIR,$pr->OUTKASIR);
-                      if($pr->KASRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$lg->INDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[19]->r_durasi){
-                        if($date['interval'] > $durasi[19]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pr->OUTKASIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pr->OUTKASIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pr->OUTKASIR.'</span></th>';
-                      }
-                        echo '</tr>';
-                    }?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Monitoring Buktikas Pabrik</h3>
-                </div>
-                <div class="box-body">
-                  <table id="tablepabrik" class="table display table-bordered table-striped table-hover" width="100%">
-                  <thead>
-                    <tr>
-                      <th style="text-align: center;">No.</th>
-                      <th style="text-align: center;">No. Bukti Kas</th>
-                      <th style="text-align: center;">Dibayar Kepada</th>
-                      <th style="text-align: center;">Kode Wilayah</th>
-                      <th style="text-align: center;">Total Nilai Rupiah</th>
-                      <th colspan="2" style="text-align: center;">PPPP</th>
-                      <th colspan="2" style="text-align: center;">KP</th>
-                      <th colspan="2"  style="text-align: center;">MPROY</th>
-                      <th colspan="2"  style="text-align: center;">MPPIC</th>
-                      <th colspan="2" style="text-align: center;">MDIV</th>
-                      <th colspan="2" style="text-align: center;">DOKKON</th>
-                      <th colspan="2" style="text-align: center;">MDAN</th>
-                      <th colspan="2" style="text-align: center;">PAJAK</th>
-                      <th colspan="2"  style="text-align: center;">SAKT</th>
-                      <th colspan="2"  style="text-align: center;">KAKT</th>
-                      <th colspan="2"  style="text-align: center;">KKEU</th>
-                      <th colspan="2" style="text-align: center;">MKU</th>
-                      <th colspan="2" style="text-align: center;">DIREKSI</th>
-                      <th colspan="2" style="text-align: center;">KASIR</th>                
-                    </tr>
-                    <tr>
-                      <th></th>
-                      <th><input type="text" id="searchPaNo" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th><input type="text" id="searchPaDk" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th><input type="text" id="searchPaKw" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th><input type="text" id="searchPaTot" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">DIBAYARKAN</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                      foreach($logpa as $pa){
-                      echo '<tr>
-                            <th style="text-align: center;"></th>
-                            <th style="text-align: center;"><a href="'.base_url('dokumen/detail/'.$pa->iddok).'">'.$pa->nodok.'</a></th>
-                            <th>'.$pa->kepada.'</th>
-                            <th>'.$pa->kodewil.'</th>
-                            <th style="text-align:right;">Rp. '.number_format($pa->total , 0, ',', '.').'</th>';
-                      $date = datediff($pa->INP4,$pa->OUTP4);
-                      if($pa->P4S=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INP4.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTP4.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[1]->r_durasi){
-                        if($date['interval'] > $durasi[1]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INP4.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTP4.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INP4.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTP4.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INP4.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTP4.'</span></th>';
-                      }
-                    
-                      $date = datediff($pa->INKP,$pa->OUTKP);
-                      if($pa->KPS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INKP.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTKP.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[2]->r_durasi){
-                        if($date['interval'] > $durasi[2]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INKP.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTKP.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INKP.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTKP.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INKP.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTKP.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INMPAB,$pa->OUTMPAB);
-                      if($pa->MPABS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INMPAB.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTMPAB.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[3]->r_durasi){
-                        if($date['interval'] > $durasi[3]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INMPAB.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTMPAB.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INMPAB.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMPAB.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INMPAB.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMPAB.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INMPIC,$pa->OUTMPIC);
-                      if($pa->MPICS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INMPIC.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTMPIC.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[4]->r_durasi){
-                        if($date['interval'] > $durasi[4]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INMPIC.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTMPIC.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INMPIC.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMPIC.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INMPIC.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMPIC.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INMDIV,$pa->OUTMDIV);
-                      if($pa->MDIVS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INMDIV.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTMDIV.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[5]->r_durasi){
-                        if($date['interval'] > $durasi[5]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INMDIV.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTMDIV.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INMDIV.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMDIV.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INMDIV.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMDIV.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INDOKKON,$pa->OUTDOKKON);
-                      if($pa->DOKKONS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTDOKKON.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[11]->r_durasi){
-                        if($date['interval'] > $durasi[11]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INDOKKON.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTDOKKON.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTDOKKON.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTDOKKON.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INMDAN,$pa->OUTMDAN);
-                      if($pa->MDANS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INMDAN.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTMDAN.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[12]->r_durasi){
-                        if($date['interval'] > $durasi[12]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INMDAN.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTMDAN.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMDAN.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMDAN.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INPJK,$pa->OUTPJK);
-                      if($pa->PJKS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INPJK.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTPJK.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[13]->r_durasi){
-                        if($date['interval'] > $durasi[13]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INPJK.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTPJK.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTPJK.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTPJK.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INSAKT,$pa->OUTSAKT);
-                      if($pa->SAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INSAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTSAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[14]->r_durasi){
-                        if($date['interval'] > $durasi[14]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INSAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTSAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTSAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTSAKT.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INKAKT,$pa->OUTKAKT);
-                      if($pa->KAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INKAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTKAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[15]->r_durasi){
-                        if($date['interval'] > $durasi[15]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INKAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTKAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTKAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTKAKT.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INKKEU,$pa->OUTKKEU);
-                      if($pa->KKEUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INKKEU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTKKEU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[16]->r_durasi){
-                        if($date['interval'] > $durasi[16]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INKKEU.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTKKEU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTKKEU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTKKEU.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INMKU,$pa->OUTMKU);
-                      if($pa->MKUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INMKU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTMKU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[17]->r_durasi){
-                        if($date['interval'] > $durasi[17]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INMKU.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTMKU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMKU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTMKU.'</span></th>';
-                      }
-
-                      $date = datediff($pa->INDIR,$pa->OUTDIR);
-                      if($pa->DIRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INDIR.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$pa->OUTDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[18]->r_durasi){
-                        if($date['interval'] > $durasi[18]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->INDIR.'</span></th>
-                              <th><span class = "badge bg-red">'.$pa->OUTDIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTDIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$pa->OUTDIR.'</span></th>';
-                      }
-                      $date = datediff($pa->INKASIR,$pa->OUTKASIR);
-                      if($pa->KASRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$pa->INDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[19]->r_durasi){
-                        if($date['interval'] > $durasi[19]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$pa->OUTKASIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$pa->OUTKASIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$pa->OUTKASIR.'</span></th>';
-                      }                      
-                        echo '</tr>';
-                        }
-                        ?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <!-- /.box -->
-              <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Monitoring Buktikas Pusat</h3>
-                </div>
-                <div class="box-body">
-                  <table id="tablepusat" class="table display table-bordered table-striped table-hover" width="100%">
-                  <thead>
-                    <tr>
-                      <th style="text-align: center;">No.</th>
-                      <th style="text-align: center;">No. Bukti Kas</th>
-                      <th style="text-align: center;">Dibayar Kepada</th>
-                      <!-- <th style="text-align: center;">Kode Wilayah</th> -->
-                      <th style="text-align: center;">Total Nilai Rupiah</th>
-                      <th colspan="2" style="text-align: center;">DOKKON</th>
-                      <th colspan="2" style="text-align: center;">MDAN</th>
-                      <th colspan="2" style="text-align: center;">PAJAK</th>
-                      <th colspan="2"  style="text-align: center;">SAKT</th>
-                      <th colspan="2"  style="text-align: center;">KAKT</th>
-                      <th colspan="2"  style="text-align: center;">KKEU</th>
-                      <th colspan="2" style="text-align: center;">MKU</th>
-                      <th colspan="2" style="text-align: center;">DIREKSI</th> 
-                      <th colspan="2" style="text-align: center;">KASIR</th>              
-                    </tr>
-                    <tr>
-                      <th></th>
-                      <th><input type="text" id="searchPuNo" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th><input type="text" id="searchPuDk" style="width: 100%;" placeholder="Telusuri"></th>
-                      <!-- <th><input type="text" id="searchPuKw" style="width: 100%;" placeholder="Telusuri"></th> -->
-                      <th><input type="text" id="searchPuTot" style="width: 100%;" placeholder="Telusuri"></th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">IN</th>
-                      <th style="text-align: center;">OUT</th>
-                      <th style="text-align: center;">DIBAYARKAN</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                      foreach($logps as $ps){
-                      echo '<tr>
-                            <th style="text-align: center;"></th>
-                            <th style="text-align: center;"><a href="'.base_url('dokumen/detail/'.$ps->iddok).'">'.$ps->nodok.'</a></th>
-                            <th>'.$ps->kepada.'</th>
-                            <th>'.$ps->total.'</th>';
-                      $date = datediff($ps->INDOKKON,$ps->OUTDOKKON);
-                      if($ps->DOKKONS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$ps->OUTDOKKON.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[11]->r_durasi){
-                        if($date['interval'] > $durasi[11]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->INDOKKON.'</span></th>
-                              <th><span class = "badge bg-red">'.$ps->OUTDOKKON.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTDOKKON.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->INDOKKON.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTDOKKON.'</span></th>';
-                      }
-
-                      $date = datediff($ps->INMDAN,$ps->OUTMDAN);
-                      if($ps->MDANS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INMDAN.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$ps->OUTMDAN.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[12]->r_durasi){
-                        if($date['interval'] > $durasi[12]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->INMDAN.'</span></th>
-                              <th><span class = "badge bg-red">'.$ps->OUTMDAN.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTMDAN.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->INMDAN.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTMDAN.'</span></th>';
-                      }
-
-                      $date = datediff($ps->INPJK,$ps->OUTPJK);
-                      if($ps->PJKS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INPJK.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$ps->OUTPJK.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[13]->r_durasi){
-                        if($date['interval'] > $durasi[13]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->INPJK.'</span></th>
-                              <th><span class = "badge bg-red">'.$ps->OUTPJK.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTPJK.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->INPJK.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTPJK.'</span></th>';
-                      }
-
-                      $date = datediff($ps->INSAKT,$ps->OUTSAKT);
-                      if($ps->SAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INSAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$ps->OUTSAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[14]->r_durasi){
-                        if($date['interval'] > $durasi[14]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->INSAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$ps->OUTSAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTSAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->INSAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTSAKT.'</span></th>';
-                      }
-
-                      $date = datediff($ps->INKAKT,$ps->OUTKAKT);
-                      if($ps->KAKTS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INKAKT.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$ps->OUTKAKT.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[15]->r_durasi){
-                        if($date['interval'] > $durasi[15]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->INKAKT.'</span></th>
-                              <th><span class = "badge bg-red">'.$ps->OUTKAKT.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTKAKT.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->INKAKT.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTKAKT.'</span></th>';
-                      }
-
-                      $date = datediff($ps->INKKEU,$ps->OUTKKEU);
-                      if($ps->KKEUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INKKEU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$ps->OUTKKEU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[16]->r_durasi){
-                        if($date['interval'] > $durasi[16]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->INKKEU.'</span></th>
-                              <th><span class = "badge bg-red">'.$ps->OUTKKEU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTKKEU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->INKKEU.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTKKEU.'</span></th>';
-                      }
-
-                      $date = datediff($ps->INMKU,$ps->OUTMKU);
-                      if($ps->MKUS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INMKU.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$ps->OUTMKU.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[17]->r_durasi){
-                        if($date['interval'] > $durasi[17]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->INMKU.'</span></th>
-                              <th><span class = "badge bg-red">'.$ps->OUTMKU.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTMKU.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->INMKU.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTMKU.'</span></th>';
-                      }
-
-                      $date = datediff($ps->INDIR,$ps->OUTDIR);
-                      if($ps->DIRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INDIR.'</span></th>
-                            <th><span class = "badge bg-yellow">'.$ps->OUTDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[18]->r_durasi){
-                        if($date['interval'] > $durasi[18]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->INDIR.'</span></th>
-                              <th><span class = "badge bg-red">'.$ps->OUTDIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTDIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->INDIR.'</span></th>
-                            <th><span class = "badge bg-green">'.$ps->OUTDIR.'</span></th>';
-                      }
-                      $date = datediff($ps->INKASIR,$ps->OUTKASIR);
-                      if($ps->KASRS=='1'){
-                            echo '
-                            <th><span class = "badge bg-yellow">'.$ps->INDIR.'</span></th>';  
-                        } else if($date['intervalcurrent'] > $durasi[19]->r_durasi){
-                        if($date['interval'] > $durasi[19]->r_durasi){
-                          echo '
-                              <th><span class = "badge bg-red">'.$ps->OUTKASIR.'</span></th>';
-                        }else{
-                            echo '
-                            <th><span class = "badge bg-green">'.$ps->OUTKASIR.'</span></th>';  
-                        }
-                      } else {
-                        echo '
-                            <th><span class = "badge bg-green">'.$ps->OUTKASIR.'</span></th>';
-                      } 
-                       echo '</tr>';
-                        }
-                        ?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <!-- /.box -->
-              <?php 
-              }
-              ?>    
-          </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
-    <!-- /.content -->
-  </div>
+    </div>
+    <!-- End Realtime sts area-->
 

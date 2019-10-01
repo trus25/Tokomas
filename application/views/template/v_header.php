@@ -2,387 +2,593 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html class="no-js" lang="">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Bukti Kas | Wika Industri & Konstruksi</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_bower');?>bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_bower');?>font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_bower');?>Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_dist');?>css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_dist');?>css/skins/_all-skins.min.css">
-  <!-- Morris chart -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_bower');?>morris.js/morris.css">
-  <!-- jvectormap -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_bower');?>jvectormap/jquery-jvectormap.css">
-  <!-- Date Picker -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_bower');?>bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_bower');?>bootstrap-daterangepicker/daterangepicker.css">
-  <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_plugins');?>bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="<?php echo config_item('assets_bower');?>datatables.net-bs/css/dataTables.bootstrap.min.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-  <style>
-    td.details-control {
-    background: url('<?php echo config_item('assets_path');?>img/brand/details_open.png') no-repeat center center;
-    cursor: pointer;
-    }
-    tr.details td.details-control {
-        background: url('<?php echo config_item('assets_path');?>img/brand/details_close.png') no-repeat center center;
-    }
-    /* Radio Button */
-    .customradio {
-      display: block;
-      position: relative;
-      padding-left: 25px;
-      margin-top: 7px;
-      margin-bottom: 6px;
-      cursor: pointer;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    th, td { white-space: nowrap; }
-    div.dataTables_wrapper {
-        margin: 0 auto;
-    }
- 
-    div.container {
-        width: 80%;
-    }
-
-    /* Hide the browser's default radio button */
-    .customradio input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-    }
-
-    /* Create a custom radio button */
-    .cmark {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 20px;
-      width: 20px;
-      background-color: #eee;
-      border-radius: 50%;
-    }
-
-    /* On mouse-over, add a grey background color */
-    .customradio:hover input ~ .cmark {
-      background-color: #ccc;
-    }
-
-    /* When the radio button is checked, add a blue background */
-    .customradio input:checked ~ .cmark {
-      background-color: #2196F3;
-    }
-
-    /* Create the indicator (the dot/circle - hidden when not checked) */
-    .cmark:after {
-      content: "";
-      position: absolute;
-      display: none;
-    }
-
-    /* Show the indicator (dot/circle) when checked */
-    .customradio input:checked ~ .cmark:after {
-      display: block;
-    }
-
-    /* Style the indicator (dot/circle) */
-    .customradio .cmark:after {
-      top: 6px;
-      left: 6px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: white;
-    }
-
-    /* Checkbox */
-    .customcheck {
-      display: block;
-      position: relative;
-      padding-left: 35px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    /* Hide the browser's default checkbox */
-    .customcheck input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-      height: 0;
-      width: 0;
-    }
-
-    /* Create a custom checkbox */
-    .checkmark {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 20px;
-      width: 20px;
-      background-color: #eee;
-    }
-
-    /* On mouse-over, add a grey background color */
-    .customcheck:hover input ~ .checkmark {
-      background-color: #ccc;
-    }
-
-    /* When the checkbox is checked, add a blue background */
-    .customcheck input:checked ~ .checkmark {
-      background-color: #2196F3;
-    }
-
-    /* Create the checkmark/indicator (hidden when not checked) */
-    .checkmark:after {
-      content: "";
-      position: absolute;
-      display: none;
-    }
-
-    /* Show the checkmark when checked */
-    .customcheck input:checked ~ .checkmark:after {
-      display: block;
-    }
-
-    /* Style the cmark/indicator */
-    .customcheck .checkmark:after {
-      left: 7px;
-      top: 4px;
-      width: 5px;
-      height: 10px;
-      border: solid white;
-      border-width: 0 3px 3px 0;
-      -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-      transform: rotate(45deg);
-    }
-
-    .borderless{
-      background-color: white;
-      border: 1px solid Transparent!important;
-    }
-
-    .bradius{
-      border-radius: 5px;
-    }
-
-    .approved {
-      text-align: justify;
-      border: 2px solid black;
-      padding: 14px 28px;
-      background-color: white;
-      border-color: #2196F3;
-      color: dodgerblue;
-      cursor: pointer;
-      /* font-weight: normal !important; */
-    }
-    .rejected {
-      border: 2px solid black;
-      padding: 14px 28px;
-      background-color: white;
-      border-color: #f44336;
-      color: red;
-      cursor: pointer;
-      /* font-weight: normal !important; */
-    }
-    .waiting {
-      border: 2px solid black;
-      padding: 14px 28px;
-      background-color: white;
-      border-color: #e7e7e7;
-      color: black;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Tokomas</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon
+    ============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo config_item('assets_path');?>img/favicon.ico">
+    <!-- Google Fonts
+    ============================================ -->
+    <link href="<?php echo config_item('assets_path');?>https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/bootstrap.min.css">
+    <!-- Bootstrap CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/font-awesome.min.css">
+    <!-- owl.carousel CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/owl.carousel.css">
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/owl.theme.css">
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/owl.transitions.css">
+    <!-- meanmenu CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/meanmenu/meanmenu.min.css">
+    <!-- animate CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/animate.css">
+    <!-- normalize CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/normalize.css">
+    <!-- mCustomScrollbar CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <!-- jvectormap CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/jvectormap/jquery-jvectormap-2.0.3.css">
+    <!-- notika icon CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/notika-custom-icon.css">
+    <!-- wave CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/wave/waves.min.css">
+    <!-- main CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/main.css">
+    <!-- style CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>style.css">
+    <!-- responsive CSS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/responsive.css">
+    <!-- modernizr JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
 
-  <header class="main-header">
-    <!-- Logo -->
-    <a href="index2.html" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>B</b>K</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><label>BUKTI</label>KAS</span>
-    </a>
-    <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <!-- Notifications: style can be found in dropdown.less -->
-          <!--<li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
-              <li>
-                <ul class="menu">
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">View all</a></li>
-            </ul>
-          </li> -->
-          <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?php echo config_item('assets_dist');?>img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?php echo $role;?></span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img src="<?php echo config_item('assets_dist');?>img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
-                <p>
-                  <?php echo $role;?> <?php if($namawil) echo '- '.$namawil;?>
-                </p>
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <!-- <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
-                </div> -->
-                <div class="pull-right">
-                  <a href="<?php echo config_item('base_url');?>dashboard/logout" class="btn btn-default btn-flat">Sign out</a>
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <!-- Start Header Top Area -->
+    <div class="header-top-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="logo-area">
+                        <a href="#"><img src="<?php echo config_item('assets_path');?>img/logo/logo.png" alt="" /></a>
+                    </div>
                 </div>
-              </li>
-            </ul>
-          </li>
-          <!-- Control Sidebar Toggle Button -->
-          <!-- <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li> -->
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-    <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="<?php echo config_item('assets_dist');?>img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <div class="header-top-menu">
+                        <ul class="nav navbar-nav notika-top-nav">
+                            <li class="nav-item dropdown">
+                                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><span><i class="notika-icon notika-search"></i></span></a>
+                                <div role="menu" class="dropdown-menu search-dd animated flipInX">
+                                    <div class="search-input">
+                                        <i class="notika-icon notika-left-arrow"></i>
+                                        <input type="text" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><span><i class="notika-icon notika-mail"></i></span></a>
+                                <div role="menu" class="dropdown-menu message-dd animated zoomIn">
+                                    <div class="hd-mg-tt">
+                                        <h2>Messages</h2>
+                                    </div>
+                                    <div class="hd-message-info">
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/1.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>David Belle</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/2.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Jonathan Morris</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/4.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Fredric Mitchell</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/1.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>David Belle</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/2.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Glenn Jecobs</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="hd-mg-va">
+                                        <a href="#">View All</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item nc-al"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><span><i class="notika-icon notika-alarm"></i></span><div class="spinner4 spinner-4"></div><div class="ntd-ctn"><span>3</span></div></a>
+                                <div role="menu" class="dropdown-menu message-dd notification-dd animated zoomIn">
+                                    <div class="hd-mg-tt">
+                                        <h2>Notification</h2>
+                                    </div>
+                                    <div class="hd-message-info">
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/1.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>David Belle</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/2.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Jonathan Morris</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/4.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Fredric Mitchell</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/1.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>David Belle</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/2.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Glenn Jecobs</h3>
+                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="hd-mg-va">
+                                        <a href="#">View All</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><span><i class="notika-icon notika-menus"></i></span><div class="spinner4 spinner-4"></div><div class="ntd-ctn"><span>2</span></div></a>
+                                <div role="menu" class="dropdown-menu message-dd task-dd animated zoomIn">
+                                    <div class="hd-mg-tt">
+                                        <h2>Tasks</h2>
+                                    </div>
+                                    <div class="hd-message-info hd-task-info">
+                                        <div class="skill">
+                                            <div class="progress">
+                                                <div class="lead-content">
+                                                    <p>HTML5 Validation Report</p>
+                                                </div>
+                                                <div class="progress-bar wow fadeInLeft" data-progress="95%" style="width: 95%;" data-wow-duration="1.5s" data-wow-delay="1.2s"> <span>95%</span>
+                                                </div>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="lead-content">
+                                                    <p>Google Chrome Extension</p>
+                                                </div>
+                                                <div class="progress-bar wow fadeInLeft" data-progress="85%" style="width: 85%;" data-wow-duration="1.5s" data-wow-delay="1.2s"><span>85%</span> </div>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="lead-content">
+                                                    <p>Social Internet Projects</p>
+                                                </div>
+                                                <div class="progress-bar wow fadeInLeft" data-progress="75%" style="width: 75%;" data-wow-duration="1.5s" data-wow-delay="1.2s"><span>75%</span> </div>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="lead-content">
+                                                    <p>Bootstrap Admin</p>
+                                                </div>
+                                                <div class="progress-bar wow fadeInLeft" data-progress="93%" style="width: 65%;" data-wow-duration="1.5s" data-wow-delay="1.2s"><span>65%</span> </div>
+                                            </div>
+                                            <div class="progress progress-bt">
+                                                <div class="lead-content">
+                                                    <p>Youtube App</p>
+                                                </div>
+                                                <div class="progress-bar wow fadeInLeft" data-progress="55%" style="width: 55%;" data-wow-duration="1.5s" data-wow-delay="1.2s"><span>55%</span> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hd-mg-va">
+                                        <a href="#">View All</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><span><i class="notika-icon notika-chat"></i></span></a>
+                                <div role="menu" class="dropdown-menu message-dd chat-dd animated zoomIn">
+                                    <div class="hd-mg-tt">
+                                        <h2>Chat</h2>
+                                    </div>
+                                    <div class="search-people">
+                                        <i class="notika-icon notika-left-arrow"></i>
+                                        <input type="text" placeholder="Search People" />
+                                    </div>
+                                    <div class="hd-message-info">
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img chat-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/1.jpg" alt="" />
+                                                    <div class="chat-avaible"><i class="notika-icon notika-dot"></i></div>
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>David Belle</h3>
+                                                    <p>Available</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img chat-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/2.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Jonathan Morris</h3>
+                                                    <p>Last seen 3 hours ago</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img chat-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/4.jpg" alt="" />
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Fredric Mitchell</h3>
+                                                    <p>Last seen 2 minutes ago</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img chat-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/1.jpg" alt="" />
+                                                    <div class="chat-avaible"><i class="notika-icon notika-dot"></i></div>
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>David Belle</h3>
+                                                    <p>Available</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="hd-message-sn">
+                                                <div class="hd-message-img chat-img">
+                                                    <img src="<?php echo config_item('assets_path');?>img/post/2.jpg" alt="" />
+                                                    <div class="chat-avaible"><i class="notika-icon notika-dot"></i></div>
+                                                </div>
+                                                <div class="hd-mg-ctn">
+                                                    <h3>Glenn Jecobs</h3>
+                                                    <p>Available</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="hd-mg-va">
+                                        <a href="#">View All</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="pull-left info">
-          <p><?php echo $name;?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+    </div>
+    <!-- End Header Top Area -->
+    <!-- Mobile Menu start -->
+    <div class="mobile-menu-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="mobile-menu">
+                        <nav id="dropdown">
+                            <ul class="mobile-menu-nav">
+                                <li><a data-toggle="collapse" data-target="#Charts" href="#">Home</a>
+                                    <ul class="collapse dropdown-header-top">
+                                        <li><a href="index.html">Dashboard One</a></li>
+                                        <li><a href="index-2.html">Dashboard Two</a></li>
+                                        <li><a href="index-3.html">Dashboard Three</a></li>
+                                        <li><a href="index-4.html">Dashboard Four</a></li>
+                                        <li><a href="analytics.html">Analytics</a></li>
+                                        <li><a href="widgets.html">Widgets</a></li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#demoevent" href="#">Transaksi</a>
+                                    <ul id="demoevent" class="collapse dropdown-header-top">
+                                        <li><a href="inbox.html">Penjualan</a></li>
+                                        <li><a href="view-email.html">Pembelian</a></li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#democrou" href="#">Interface</a>
+                                    <ul id="democrou" class="collapse dropdown-header-top">
+                                        <li><a href="animations.html">Animations</a></li>
+                                        <li><a href="google-map.html">Google Map</a></li>
+                                        <li><a href="data-map.html">Data Maps</a></li>
+                                        <li><a href="code-editor.html">Code Editor</a></li>
+                                        <li><a href="image-cropper.html">Images Cropper</a></li>
+                                        <li><a href="wizard.html">Wizard</a></li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#demolibra" href="#">Charts</a>
+                                    <ul id="demolibra" class="collapse dropdown-header-top">
+                                        <li><a href="flot-charts.html">Flot Charts</a></li>
+                                        <li><a href="bar-charts.html">Bar Charts</a></li>
+                                        <li><a href="line-charts.html">Line Charts</a></li>
+                                        <li><a href="area-charts.html">Area Charts</a></li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#demodepart" href="#">Tables</a>
+                                    <ul id="demodepart" class="collapse dropdown-header-top">
+                                        <li><a href="normal-table.html">Normal Table</a></li>
+                                        <li><a href="data-table.html">Data Table</a></li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#demo" href="#">Forms</a>
+                                    <ul id="demo" class="collapse dropdown-header-top">
+                                        <li><a href="form-elements.html">Form Elements</a></li>
+                                        <li><a href="form-components.html">Form Components</a></li>
+                                        <li><a href="form-examples.html">Form Examples</a></li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#Miscellaneousmob" href="#">App views</a>
+                                    <ul id="Miscellaneousmob" class="collapse dropdown-header-top">
+                                        <li><a href="notification.html">Notifications</a>
+                                        </li>
+                                        <li><a href="alert.html">Alerts</a>
+                                        </li>
+                                        <li><a href="modals.html">Modals</a>
+                                        </li>
+                                        <li><a href="buttons.html">Buttons</a>
+                                        </li>
+                                        <li><a href="tabs.html">Tabs</a>
+                                        </li>
+                                        <li><a href="accordion.html">Accordion</a>
+                                        </li>
+                                        <li><a href="dialog.html">Dialogs</a>
+                                        </li>
+                                        <li><a href="popovers.html">Popovers</a>
+                                        </li>
+                                        <li><a href="tooltips.html">Tooltips</a>
+                                        </li>
+                                        <li><a href="dropdown.html">Dropdowns</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#Pagemob" href="#">Pages</a>
+                                    <ul id="Pagemob" class="collapse dropdown-header-top">
+                                        <li><a href="contact.html">Contact</a>
+                                        </li>
+                                        <li><a href="invoice.html">Invoice</a>
+                                        </li>
+                                        <li><a href="typography.html">Typography</a>
+                                        </li>
+                                        <li><a href="color.html">Color</a>
+                                        </li>
+                                        <li><a href="login-register.html">Login Register</a>
+                                        </li>
+                                        <li><a href="404.html">404 Page</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <!-- search form -->
-      <!-- <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
+    </div>
+    <!-- Mobile Menu end -->
+    <!-- Main Menu area start-->
+    <div class="main-menu-area mg-tb-40">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
+                        <li class="active"><a data-toggle="tab" href="#Home"><i class="notika-icon notika-house"></i> Home</a>
+                        </li>
+                        <li><a data-toggle="tab" href="#mailbox"><i class="fa fa-shopping-cart"></i> Transaksi</a>
+                        </li>
+                        <li><a data-toggle="tab" href="#Interface"><i class="notika-icon notika-edit"></i> Interface</a>
+                        </li>
+                        <li><a data-toggle="tab" href="#Charts"><i class="notika-icon notika-bar-chart"></i> Charts</a>
+                        </li>
+                        <li><a data-toggle="tab" href="#Tables"><i class="notika-icon notika-windows"></i> Tables</a>
+                        </li>
+                        <li><a data-toggle="tab" href="#Forms"><i class="notika-icon notika-form"></i> Forms</a>
+                        </li>
+                        <li><a data-toggle="tab" href="#Appviews"><i class="notika-icon notika-app"></i> App views</a>
+                        </li>
+                        <li><a data-toggle="tab" href="#Page"><i class="notika-icon notika-support"></i> Pages</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content custom-menu-content">
+                        <div id="Home" class="tab-pane in active notika-tab-menu-bg animated flipInX">
+                            <ul class="notika-main-menu-dropdown">
+                                <li><a href="index.html">Dashboard One</a>
+                                </li>
+                                <li><a href="index-2.html">Dashboard Two</a>
+                                </li>
+                                <li><a href="index-3.html">Dashboard Three</a>
+                                </li>
+                                <li><a href="index-4.html">Dashboard Four</a>
+                                </li>
+                                <li><a href="analytics.html">Analytics</a>
+                                </li>
+                                <li><a href="widgets.html">Widgets</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="mailbox" class="tab-pane notika-tab-menu-bg animated flipInX">
+                            <ul class="notika-main-menu-dropdown">
+                                <li><a href="inbox.html">Penjualan</a>
+                                </li>
+                                <li><a href="view-email.html">Pembelian</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="Interface" class="tab-pane notika-tab-menu-bg animated flipInX">
+                            <ul class="notika-main-menu-dropdown">
+                                <li><a href="animations.html">Animations</a>
+                                </li>
+                                <li><a href="google-map.html">Google Map</a>
+                                </li>
+                                <li><a href="data-map.html">Data Maps</a>
+                                </li>
+                                <li><a href="code-editor.html">Code Editor</a>
+                                </li>
+                                <li><a href="image-cropper.html">Images Cropper</a>
+                                </li>
+                                <li><a href="wizard.html">Wizard</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="Charts" class="tab-pane notika-tab-menu-bg animated flipInX">
+                            <ul class="notika-main-menu-dropdown">
+                                <li><a href="flot-charts.html">Flot Charts</a>
+                                </li>
+                                <li><a href="bar-charts.html">Bar Charts</a>
+                                </li>
+                                <li><a href="line-charts.html">Line Charts</a>
+                                </li>
+                                <li><a href="area-charts.html">Area Charts</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="Tables" class="tab-pane notika-tab-menu-bg animated flipInX">
+                            <ul class="notika-main-menu-dropdown">
+                                <li><a href="normal-table.html">Normal Table</a>
+                                </li>
+                                <li><a href="data-table.html">Data Table</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="Forms" class="tab-pane notika-tab-menu-bg animated flipInX">
+                            <ul class="notika-main-menu-dropdown">
+                                <li><a href="form-elements.html">Form Elements</a>
+                                </li>
+                                <li><a href="form-components.html">Form Components</a>
+                                </li>
+                                <li><a href="form-examples.html">Form Examples</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="Appviews" class="tab-pane notika-tab-menu-bg animated flipInX">
+                            <ul class="notika-main-menu-dropdown">
+                                <li><a href="notification.html">Notifications</a>
+                                </li>
+                                <li><a href="alert.html">Alerts</a>
+                                </li>
+                                <li><a href="modals.html">Modals</a>
+                                </li>
+                                <li><a href="buttons.html">Buttons</a>
+                                </li>
+                                <li><a href="tabs.html">Tabs</a>
+                                </li>
+                                <li><a href="accordion.html">Accordion</a>
+                                </li>
+                                <li><a href="dialog.html">Dialogs</a>
+                                </li>
+                                <li><a href="popovers.html">Popovers</a>
+                                </li>
+                                <li><a href="tooltips.html">Tooltips</a>
+                                </li>
+                                <li><a href="dropdown.html">Dropdowns</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="Page" class="tab-pane notika-tab-menu-bg animated flipInX">
+                            <ul class="notika-main-menu-dropdown">
+                                <li><a href="contact.html">Contact</a>
+                                </li>
+                                <li><a href="invoice.html">Invoice</a>
+                                </li>
+                                <li><a href="typography.html">Typography</a>
+                                </li>
+                                <li><a href="color.html">Color</a>
+                                </li>
+                                <li><a href="login-register.html">Login Register</a>
+                                </li>
+                                <li><a href="404.html">404 Page</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </form> -->
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
-        <li>
-          <a href="<?php echo config_item('base_url');?>dashboard">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-          </a>
-        </li>
-        <li>
-          <a href="<?php echo config_item('base_url');?>barang">
-            <i class="fa fa-table"></i> <span>Barang</span>
-          </a>
-        </li>
-        <li>
-          <a href="<?php echo config_item('base_url');?>transaksi">
-            <i class="fa fa-shopping-cart"></i><span>Transaksi</span>
-          </a>
-        </li>
-        <!-- <li>
-          <a href="<?php echo config_item('base_url');?>laporan">
-            <i class="fa fa-file-text"></i> <span>Laporan</span>
-          </a>
-        </li> -->
-        <li>
-          <a href="<?php echo config_item('base_url');?>pengguna">
-            <i class="fa fa-users"></i> <span>Pengguna</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+    </div>
+    <!-- Main Menu area End-->

@@ -1,58 +1,91 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 1.0
+<!-- Start Footer area-->
+    <div class="footer-copyright-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="footer-copy-right">
+                        <p>Copyright © 2018 
+. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-   <strong>Copyright &copy; 2019 <b>Wika Industri dan Konstruksi</b>.</strong> All rights reserved.
-  </footer>
-
-<!-- ./wrapper -->
-
-<!-- jQuery 3 -->
-<script src="<?php echo config_item('assets_bower');?>jquery/dist/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="<?php echo config_item('assets_bower');?>jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-</script>
-<!-- Bootstrap 3.3.7 -->
-<script src="<?php echo config_item('assets_bower');?>bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Morris.js charts -->
-<script src="<?php echo config_item('assets_bower');?>raphael/raphael.min.js"></script>
-<script src="<?php echo config_item('assets_bower');?>morris.js/morris.min.js"></script>
-<!-- Sparkline -->
-<script src="<?php echo config_item('assets_bower');?>jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-<!-- jvectormap -->
-<script src="<?php echo config_item('assets_plugins');?>jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="<?php echo config_item('assets_plugins');?>jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="<?php echo config_item('assets_bower');?>jquery-knob/dist/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="<?php echo config_item('assets_bower');?>moment/min/moment.min.js"></script>
-<script src="<?php echo config_item('assets_bower');?>bootstrap-daterangepicker/daterangepicker.js"></script>
-<!-- datepicker -->
-<script src="<?php echo config_item('assets_bower');?>bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-<!-- Bootstrap WYSIHTML5 -->
-<script src="<?php echo config_item('assets_plugins');?>bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<!-- Slimscroll -->
-<script src="<?php echo config_item('assets_bower');?>jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="<?php echo config_item('assets_bower');?>fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="<?php echo config_item('assets_dist');?>js/adminlte.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="<?php echo config_item('assets_dist');?>js/pages/dashboard.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<?php echo config_item('assets_dist');?>js/demo.js"></script>
-
-<!-- DataTables -->
-<script src="<?php echo config_item('assets_bower');?>datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="<?php echo config_item('assets_bower');?>datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <!-- End Footer area-->
+    <!-- jquery
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- bootstrap JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/bootstrap.min.js"></script>
+    <!-- wow JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/wow.min.js"></script>
+    <!-- price-slider JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/jquery-price-slider.js"></script>
+    <!-- owl.carousel JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/owl.carousel.min.js"></script>
+    <!-- scrollUp JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/jquery.scrollUp.min.js"></script>
+    <!-- meanmenu JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/meanmenu/jquery.meanmenu.js"></script>
+    <!-- counterup JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/counterup/jquery.counterup.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/counterup/waypoints.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/counterup/counterup-active.js"></script>
+    <!-- mCustomScrollbar JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- jvectormap JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/jvectormap/jvectormap-active.js"></script>
+    <!-- sparkline JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/sparkline/sparkline-active.js"></script>
+    <!-- sparkline JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/flot/jquery.flot.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/flot/jquery.flot.resize.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/flot/curvedLines.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/flot/flot-active.js"></script>
+    <!-- knob JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/knob/jquery.knob.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/knob/jquery.appear.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/knob/knob-active.js"></script>
+    <!--  wave JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/wave/waves.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/wave/wave-active.js"></script>
+    <!--  todo JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/todo/jquery.todo.js"></script>
+    <!-- plugins JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/plugins.js"></script>
+  <!--  Chat JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/chat/moment.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/chat/jquery.chat.js"></script>
+    <!-- main JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/main.js"></script>
+  <!-- tawk chat JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/tawk-chat.js"></script>
 </body>
+
 </html>
 
 <script>

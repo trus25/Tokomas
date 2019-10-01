@@ -28,10 +28,7 @@ date_default_timezone_set('Asia/Bangkok');
 $config['base_url']	= "http://".$_SERVER['HTTP_HOST'].preg_replace('@/+$@','',dirname($_SERVER['SCRIPT_NAME'])=="\\"?"":dirname($_SERVER['SCRIPT_NAME'])).'/';
 
 /* Custom Config */
-$config['assets_bower'] = $config['base_url'].'assets/bower_components/';
-$config['assets_plugins'] = $config['base_url'].'assets/plugins/';
-$config['assets_dist'] = $config['base_url'].'assets/dist/';
-$config['assets_path'] = $config['base_url'].'assets/';
+$config['assets_path'] = $config['base_url'].'assets/green-horizotal/';
 
 /*
 |--------------------------------------------------------------------------

@@ -41,7 +41,7 @@ class Login extends CI_Controller{
 					// 'namawil' => $wilayah->w_nama
 					);
 			$this->session->set_userdata($data_session);
-			redirect(base_url("transaksi"));
+			redirect(base_url("dashboard"));
 		} else {
 			$this->session->set_flashdata('failed_login', 'Username atau Password Salah!');
 			redirect(base_url('login'));
