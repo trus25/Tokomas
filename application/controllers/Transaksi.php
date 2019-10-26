@@ -5,7 +5,7 @@ class Transaksi extends CI_Controller{
  
 	function __construct(){
 		parent::__construct();
-		$this->load->model('M_CallSQL');
+		$this->load->model('M_Login');
 		
 		if($this->session->userdata('status') != "Login"){
 			redirect(base_url("login"));
@@ -13,7 +13,7 @@ class Transaksi extends CI_Controller{
 	}
     
 	function index(){
-		$data = $this->M_CallSQL->sessdata();  
+		$data = $this->M_Login->sessdata();  
         $data['barang'] = $this->db->get("tm_barang")->result();
         $view = array(
                     $this->load->view('template/v_header', $data),
@@ -24,7 +24,7 @@ class Transaksi extends CI_Controller{
 	}
 
     function getbarang($id){
-        $barang = $this->M_CallSQL->where("tm_barang", array('b_id' => $id))->row();
+        $barang = $this->M_Login->where("tm_barang", array('b_id' => $id))->row();
 
         if ($barang) {
 
@@ -178,7 +178,7 @@ class Transaksi extends CI_Controller{
             $row['tombol'] = '<a href="javascript:void()" class="btn btn-danger" onclick="deletebarang('
                     ."'".$items["rowid"]."'".','."'".$items['subtotal'].
                     "'".')"> <i class="fa fa-close"></i> Delete</a>';
-            $stok = $this->M_CallSQL->where("tm_barang", array('b_id' => $items["id"]))->row();
+            $stok = $this->M_Login->where("tm_barang", array('b_id' => $items["id"]))->row();
             $row['stok'] = $stok->b_stok;
             if($items["qty"] > $stok->b_stok){
                 $row['stat'] = 'Lebih';
@@ -235,7 +235,7 @@ class Transaksi extends CI_Controller{
             foreach ($this->cart->contents() as $items){
                 $row = array();
                 $row['qty'] = $items["qty"];
-                $stok = $this->M_CallSQL->where("tm_barang", array('b_id' => $items["id"]))->row();
+                $stok = $this->M_Login->where("tm_barang", array('b_id' => $items["id"]))->row();
                 $row['stok'] = $stok->b_stok;
                 if($items["qty"] > $stok->b_stok){
                     $cek = 1;
@@ -253,10 +253,10 @@ class Transaksi extends CI_Controller{
                                     't_kembali' => $kembali,
                                     't_jenis'   => 'Penjualan'
                                 );
-                $this->M_CallSQL->input_data($transaksi, "tm_transaksi");
+                $this->M_Login->input_data($transaksi, "tm_transaksi");
                 $Qidd = $this->db->insert_id();
                 foreach ($this->cart->contents() as $items){
-                $stok = $this->M_CallSQL->where("tm_barang", array('b_id' => $items["id"]))->row();
+                $stok = $this->M_Login->where("tm_barang", array('b_id' => $items["id"]))->row();
                 $penjualan = array(
                                 't_id' => $Qidd,
                                 'b_id' => $items["id"],
@@ -266,8 +266,8 @@ class Transaksi extends CI_Controller{
                 $updatestok = array(
                                 'b_stok' => $stok->b_stok - $items["qty"],
                                 );
-                $this->M_CallSQL->input_data($penjualan, "tm_penjualan");
-                $this->M_CallSQL->update_data(array('b_id' => $items["id"]) , $updatestok, "tm_barang" );
+                $this->M_Login->input_data($penjualan, "tm_penjualan");
+                $this->M_Login->update_data(array('b_id' => $items["id"]) , $updatestok, "tm_barang" );
                 }
                 $this->cart->destroy();
                 $this->session->set_flashdata('berhasil_tambah', 'transaksi sukses');

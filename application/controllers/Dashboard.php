@@ -5,7 +5,7 @@ class Dashboard extends CI_Controller{
  
 	function __construct(){
 		parent::__construct();
-		$this->load->model('M_CallSQL');
+		$this->load->model('M_Login');
 		
 		if($this->session->userdata('status') != "Login"){
 			redirect(base_url("login"));
@@ -13,7 +13,7 @@ class Dashboard extends CI_Controller{
 	}
  
 	function index(){
-		$data = $this->M_CallSQL->sessdata();
+		$data = $this->M_Login->sessdata();
 		$view = array(
 			$this->load->view('template/v_header', $data),
 			$this->load->view('content/dashboard/v_dashboard', $data),

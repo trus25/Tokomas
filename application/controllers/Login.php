@@ -5,7 +5,7 @@ class Login extends CI_Controller{
  
 	function __construct(){
 		parent::__construct();
-		$this->load->model('M_CallSQL');
+		$this->load->model('M_Login');
 
 		if($this->session->userdata('status') == "Login"){
 			redirect(base_url("transaksi"));
@@ -24,10 +24,10 @@ class Login extends CI_Controller{
 			'p_password' => $password
 			);
 			
-		$check = $this->M_CallSQL->where("tm_pengguna",$where)->row();
+		$check = $this->M_Login->where("tm_pengguna",$where)->row();
 
 		if($check){
-			$role = $this->M_CallSQL->cekrole($check->r_id)->row();
+			$role = $this->M_Login->cekrole($check->r_id)->row();
 			// $wilayah = $this->db->get_where("bk_wilayah",array('w_id'=> $check->w_id))->row();
 			$data_session = array(
 					'username' => $username,
