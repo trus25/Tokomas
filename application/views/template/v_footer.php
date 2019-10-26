@@ -64,20 +64,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?php echo config_item('assets_path');?>js/knob/jquery.knob.js"></script>
     <script src="<?php echo config_item('assets_path');?>js/knob/jquery.appear.js"></script>
     <script src="<?php echo config_item('assets_path');?>js/knob/knob-active.js"></script>
+    <!-- Input Mask JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/jasny-bootstrap.min.js"></script>
+    <!-- icheck JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/icheck/icheck.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/icheck/icheck-active.js"></script>
+    <!-- rangle-slider JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/rangle-slider/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/rangle-slider/jquery-ui-touch-punch.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/rangle-slider/rangle-active.js"></script>
+    <!-- datapicker JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/datapicker/bootstrap-datepicker.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/datapicker/datepicker-active.js"></script>
+    <!-- bootstrap select JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/bootstrap-select/bootstrap-select.js"></script>
+    <!--  color-picker JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/color-picker/farbtastic.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/color-picker/color-picker.js"></script>
+    <!--  notification JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/notification/bootstrap-growl.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/notification/notification-active.js"></script>
+    <!--  summernote JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/summernote/summernote-updated.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/summernote/summernote-active.js"></script>
+    <!-- dropzone JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/dropzone/dropzone.js"></script>
     <!--  wave JS
     ============================================ -->
     <script src="<?php echo config_item('assets_path');?>js/wave/waves.min.js"></script>
     <script src="<?php echo config_item('assets_path');?>js/wave/wave-active.js"></script>
+    <!--  chosen JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/chosen/chosen.jquery.js"></script>
+    <!--  Chat JS
+    ============================================ -->
+    <script src="js/chat/jquery.chat.js"></script>
     <!--  todo JS
     ============================================ -->
     <script src="<?php echo config_item('assets_path');?>js/todo/jquery.todo.js"></script>
     <!-- plugins JS
     ============================================ -->
     <script src="<?php echo config_item('assets_path');?>js/plugins.js"></script>
-  <!--  Chat JS
+    <!--  Chat JS
     ============================================ -->
     <script src="<?php echo config_item('assets_path');?>js/chat/moment.min.js"></script>
     <script src="<?php echo config_item('assets_path');?>js/chat/jquery.chat.js"></script>
+    <!-- Data Table JS
+    ============================================ -->
+    <script src="<?php echo config_item('assets_path');?>js/data-table/jquery.dataTables.min.js"></script>
+    <script src="<?php echo config_item('assets_path');?>js/data-table/data-table-act.js"></script>
     <!-- main JS
     ============================================ -->
     <script src="<?php echo config_item('assets_path');?>js/main.js"></script>
@@ -208,7 +252,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           $('#id_barang').focus();
         }else if(qty == ''){
           $('#qty').focus();
-        }else if(qty>max){
+        }else if(+qty > +max){
           alert('Quantitas melebihi stok');
           $('#qty').focus();
         }else{
@@ -228,11 +272,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 alert('Error adding data');
             }
         });
-
+          $('.reset').val('');
           showTotal();
           showKembali($('#bayar').val());
           //mereset semua value setelah btn tambah ditekan
-          $('.reset').val('');
         };
     }
 

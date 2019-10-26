@@ -17,7 +17,7 @@ class Transaksi extends CI_Controller{
         $data['barang'] = $this->db->get("tm_barang")->result();
         $view = array(
                     $this->load->view('template/v_header', $data),
-                    $this->load->view('content/transaksi/v_transaksi', $data),
+                    $this->load->view('content/transaksi/v_transaksi1', $data),
                     $this->load->view('template/v_footer')
                 );
         return $view;
@@ -40,38 +40,90 @@ class Transaksi extends CI_Controller{
                               .$barang->b_stok.'</span>';
             }
 
-            echo '<div class="form-group">
-                        <label class="control-label col-md-3" style="text-align: left;"
-                          for="nama_barang">Nama Barang :</label>
-                        <div class="col-md-6">
-                          <input type="text" class="form-control reset" 
-                            name="nama_barang" id="nama_barang" 
-                            value="'.$barang->b_nama.'"
-                            readonly="readonly">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3" style="text-align: left;"
-                          for="harga_barang">Harga (Rp) :</label>
-                        <div class="col-md-6">
-                          <input type="text" class="form-control reset" 
-                            name="harga_barang" id="harga_barang"
-                            value="'.number_format( $barang->b_harga, 0 ,
-                             '' , '.' ).'" 
-                            readonly="readonly">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3" style="text-align: left;"
-                          for="qty">Quantity :</label>
-                        <div class="col-md-6">
-                          <input type="number" class="form-control reset" 
-                            autocomplete="off" onchange="subTotal(this.value)" 
-                            onkeyup="subTotal(this.value)" id="qty" min="0"
-                            max="'.$barang->b_stok.'" '.$disabled.' 
-                            name="qty" placeholder="Isi qty...">
-                        </div>'.$info_stok.'
-                      </div>';
+            // echo '<div class="form-group">
+            //             <label class="control-label col-md-3" style="text-align: left;"
+            //               for="nama_barang">Nama Barang :</label>
+            //             <div class="col-md-6">
+            //               <input type="text" class="form-control reset" 
+            //                 name="nama_barang" id="nama_barang" 
+            //                 value="'.$barang->b_nama.'"
+            //                 readonly="readonly">
+            //             </div>
+            //           </div>
+            //           <div class="form-group">
+            //             <label class="control-label col-md-3" style="text-align: left;"
+            //               for="harga_barang">Harga (Rp) :</label>
+            //             <div class="col-md-6">
+            //               <input type="text" class="form-control reset" 
+            //                 name="harga_barang" id="harga_barang"
+            //                 value="'.number_format( $barang->b_harga, 0 ,
+            //                  '' , '.' ).'" 
+            //                 readonly="readonly">
+            //             </div>
+            //           </div>
+            //           <div class="form-group">
+            //             <label class="control-label col-md-3" style="text-align: left;"
+            //               for="qty">Quantity :</label>
+            //             <div class="col-md-6">
+            //               <input type="number" class="form-control reset" 
+            //                 autocomplete="off" onchange="subTotal(this.value)" 
+            //                 onkeyup="subTotal(this.value)" id="qty" min="0"
+            //                 max="'.$barang->b_stok.'" '.$disabled.' 
+            //                 name="qty" placeholder="Isi qty...">
+            //             </div>'.$info_stok.'
+            //           </div>';
+            echo '<div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="nk-int-mk">
+                                        <h2>Nama Barang</h2>
+                                    </div>
+                                    <div class="form-group ic-cmp-int">
+                                        <div class="form-ic-cmp">
+                                            <i class="notika-icon notika-edit"></i>
+                                        </div>
+                                        <div class="nk-int-st">
+                                            <input type="text" class="form-control reset" 
+                                    name="nama_barang" id="nama_barang" value="'.$barang->b_nama.'"
+                                    readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="nk-int-mk">
+                                        <h2>Harga (Rp)</h2>
+                                    </div>
+                                    <div class="form-group ic-cmp-int">
+                                        <div class="form-ic-cmp">
+                                            <i class="notika-icon notika-dollar"></i>
+                                        </div>
+                                        <div class="nk-int-st">
+                                            <input type="text" class="form-control reset" value="'.number_format( $barang->b_harga, 0 ,
+                              '' , '.' ).'" name="harga_barang" id="harga_barang">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="nk-int-mk">
+                                        <h2>Quantity</h2>
+                                    </div>
+                                    <div class="form-group ic-cmp-int">
+                                        <div class="form-ic-cmp">
+                                            <i class="notika-icon notika-edit"></i>
+                                        </div>
+                                        <div class="nk-int-st">
+                                            <input type="number" class="form-control reset" 
+                                                autocomplete="off" onchange="subTotal(this.value)" 
+                                                onkeyup="subTotal(this.value)" id="qty" min="0"
+                                                max="'.$barang->b_stok.'" '.$disabled.' 
+                                                name="qty" placeholder="Isi qty...">
+                                        </div>'.$info_stok.'
+                                    </div>
+                                </div>
+                            </div>';
         }else{
 
             echo '<div class="form-group">
@@ -199,6 +251,7 @@ class Transaksi extends CI_Controller{
                                     't_jumlah' => $total,
                                     't_bayar' => $bayar,
                                     't_kembali' => $kembali,
+                                    't_jenis'   => 'Penjualan'
                                 );
                 $this->M_CallSQL->input_data($transaksi, "tm_transaksi");
                 $Qidd = $this->db->insert_id();

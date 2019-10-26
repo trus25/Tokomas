@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <!-- Main content -->
     <section class="content">
-    <?php if ($this->session->flashdata('gagal_tambah')) { ?>
+    <!-- <?php if ($this->session->flashdata('gagal_tambah')) { ?>
     <div class="form-group">
       <div class="alert alert-danger alert-primary alert-block">
       <?php echo $this->session->flashdata('gagal_tambah') ?>
@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <?php echo $this->session->flashdata('berhasil_tambah') ?>
       </div>
     </div>
-    <?php } ?>
+    <?php } ?> -->
       <div class="row">
         <div class="col-md-12">
           <div class="box">

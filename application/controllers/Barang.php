@@ -16,7 +16,7 @@ class Barang extends CI_Controller{
 		
 		$view = array(
 			$this->load->view('template/v_header', $data),
-			$this->load->view('content/barang/v_barang', $data),
+			$this->load->view('content/barang/v_barang1', $data),
 			$this->load->view('template/v_footer', $data)
 		);
 		

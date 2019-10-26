@@ -20,8 +20,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- Bootstrap CSS
     ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/bootstrap.min.css">
-    <!-- Bootstrap CSS
-    ============================================ -->
+    <!-- font awesome CSS
+        ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/font-awesome.min.css">
     <!-- owl.carousel CSS
     ============================================ -->
@@ -34,6 +34,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- animate CSS
     ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/animate.css">
+    <!-- summernote CSS
+        ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/summernote/summernote.css">
+    <!-- Range Slider CSS
+        ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/themesaller-forms.css">
     <!-- normalize CSS
     ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/normalize.css">
@@ -46,18 +52,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- notika icon CSS
     ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/notika-custom-icon.css">
+    <!-- bootstrap select CSS
+        ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/bootstrap-select/bootstrap-select.css">
     <!-- wave CSS
     ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/wave/waves.min.css">
+    <!-- Data Table JS
+    ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/jquery.dataTables.min.css">
     <!-- main CSS
     ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/main.css">
+    <!-- notification CSS
+        ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/notification/notification.css">
     <!-- style CSS
     ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>style.css">
     <!-- responsive CSS
     ============================================ -->
     <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/responsive.css">
+    <!-- main CSS
+        ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/chosen/chosen.css">
+    <!-- dropzone CSS
+        ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/dropzone/dropzone.css">
+    <!-- datapicker CSS
+        ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/datapicker/datepicker3.css">
+    <!-- Color Picker CSS
+        ============================================ -->
+    <link rel="stylesheet" href="<?php echo config_item('assets_path');?>css/color-picker/farbtastic.css">
     <!-- modernizr JS
     ============================================ -->
     <script src="<?php echo config_item('assets_path');?>js/vendor/modernizr-2.8.3.min.js"></script>
@@ -369,7 +396,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </li>
                                 <li><a data-toggle="collapse" data-target="#demoevent" href="#">Transaksi</a>
                                     <ul id="demoevent" class="collapse dropdown-header-top">
-                                        <li><a href="inbox.html">Penjualan</a></li>
+                                        <li><a href="<?php echo base_url('transaksi');?>">Penjualan</a></li>
                                         <li><a href="view-email.html">Pembelian</a></li>
                                     </ul>
                                 </li>
@@ -466,7 +493,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </li>
                         <li><a data-toggle="tab" href="#Charts"><i class="notika-icon notika-bar-chart"></i> Charts</a>
                         </li>
-                        <li><a data-toggle="tab" href="#Tables"><i class="notika-icon notika-windows"></i> Tables</a>
+                        <li><a data-toggle="tab" href="#Tables"><i class="notika-icon notika-windows"></i> Barang</a>
                         </li>
                         <li><a data-toggle="tab" href="#Forms"><i class="notika-icon notika-form"></i> Forms</a>
                         </li>
@@ -494,7 +521,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div id="mailbox" class="tab-pane notika-tab-menu-bg animated flipInX">
                             <ul class="notika-main-menu-dropdown">
-                                <li><a href="inbox.html">Penjualan</a>
+                                <li><a href="<?php echo base_url('transaksi');?>">Penjualan</a>
                                 </li>
                                 <li><a href="view-email.html">Pembelian</a>
                                 </li>
@@ -530,9 +557,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div id="Tables" class="tab-pane notika-tab-menu-bg animated flipInX">
                             <ul class="notika-main-menu-dropdown">
-                                <li><a href="normal-table.html">Normal Table</a>
+                                <li><a href="<?php echo base_url('barang');?>">Daftar Barang</a>
                                 </li>
-                                <li><a href="data-table.html">Data Table</a>
+                                <li><a href="<?php echo base_url('barang');?>">Data Table</a>
                                 </li>
                             </ul>
                         </div>
